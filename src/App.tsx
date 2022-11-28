@@ -8,6 +8,7 @@ import { rando } from './utils/rando';
 import IBlock from './models/IBlock';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Dialog } from 'primereact/dialog';
 
 function App() {
 	const [blocks, setBlocks] = useState<IBlock[]>(
@@ -24,6 +25,7 @@ function App() {
 	const [fertilizer, setFertilizer] = useState(0);
 	const [delay] = useState<number>(1000);
 	const [isPlaying, setPlaying] = useState<boolean>(false);
+	const [showDialog, setShowDialog] = useState<boolean>(false);
 	const [stop, setStop] = useState(true);
 	const seedsPerBlock = 10;
 
@@ -237,11 +239,12 @@ function App() {
 						BlockStatus.DEAD,
 					].includes(item.status)
 				).length ===
-					blocks.filter((item) => item.status !== BlockStatus.NOT_PLANTED)
-						.length &&
+				blocks.filter((item) => item.status !== BlockStatus.NOT_PLANTED)
+					.length &&
 				count > 0
 			) {
 				setStop(true);
+				setShowDialog(true);
 				toast.info('Stopped');
 			}
 		},
@@ -262,6 +265,31 @@ function App() {
 						}}
 						className='row-span-2 self-center'
 					/>
+
+
+					<Dialog header="Simulación terminada" visible={showDialog} style={{ width: '50vw' }} footer={showDialog} >
+						<div>
+							<p>Total de cosecha : 20L</p>
+							<p>Agua utilizada: {water.toFixed(2)}L</p>
+							<p>Terreno utilizado: {(
+								(blocks.filter(
+									(block) =>
+										![BlockStatus.NOT_PLANTED, BlockStatus.DEAD].includes(
+											block.status
+										)
+								).length *
+									100) /
+								blocks.length
+							).toFixed(2)}
+								%</p>
+							<p>Fertilizantes y abonos utilizados : {fertilizer.toFixed(2)}L</p>
+						</div>
+						<br />
+						<Button
+							label={"Reiniciar"} icon={`pi pi-refresh`}
+							className='row-span-2 self-center' onClick={() => { location.reload(); }}
+						/>
+					</Dialog>
 					<div className=''>
 						<p className='facts-title'>D&iacute;a</p>
 						<p className='facts-subtitle'>{count + 1}</p>
