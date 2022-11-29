@@ -22,6 +22,7 @@ function App() {
 	const [seeds, setSeeds] = useState(0);
 	const [count, setCount] = useState(0);
 	const [water, setWater] = useState(0);
+	const [harvestTotal, setHarvestTotal] = useState(0);
 	const [fertilizer, setFertilizer] = useState(0);
 	const [delay] = useState<number>(1000);
 	const [isPlaying, setPlaying] = useState<boolean>(false);
@@ -145,9 +146,11 @@ function App() {
 
 						if (gotBetter) {
 							fertilizedBlock.status = BlockStatus.GROWN_AFTER_FERTILIZATION;
+
 							fertilizedBlock.updatedAtCount = count;
 						} else {
 							fertilizedBlock.status = BlockStatus.DEAD;
+							setHarvestTotal(harvestTotal + seedsPerBlock);
 							fertilizedBlock.updatedAtCount = count;
 						}
 
@@ -269,7 +272,7 @@ function App() {
 
 					<Dialog header="Simulación terminada" visible={showDialog} style={{ width: '50vw' }} footer={showDialog} >
 						<div>
-							<p>Total de cosecha : 20L</p>
+							<p>Total de perdidas : {harvestTotal} semillas</p>
 							<p>Agua utilizada: {water.toFixed(2)}L</p>
 							<p>Terreno utilizado: {(
 								(blocks.filter(
