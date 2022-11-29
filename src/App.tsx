@@ -272,7 +272,7 @@ function App() {
 
 					<Dialog header="Simulación terminada" visible={showDialog} style={{ width: '50vw' }} footer={showDialog} >
 						<div>
-							<p>Total de perdidas : {harvestTotal} semillas</p>
+							<p>Total de perdidas : {harvestTotal} kilos</p>
 							<p>Agua utilizada: {water.toFixed(2)}L</p>
 							<p>Terreno utilizado: {(
 								(blocks.filter(
